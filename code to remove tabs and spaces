@@ -1,0 +1,22 @@
+int counter = 0;
+        char command_without_space_or_tab[num_char_read];
+        token = strtok(command, "	");
+        while(token!=NULL){
+        	for(int i=0;i<strlen(token);i++)
+        		command_without_space_or_tab[counter++] = token[i];
+        	command_without_space_or_tab[counter++] = ' ';
+        	token = strtok(0, "	");
+        }
+        command_without_space_or_tab[counter++] = '\0';
+        strcpy(command, command_without_space_or_tab);
+        strcpy(command_without_space_or_tab, "");
+        counter = 0;
+        token = strtok(command, " ");
+        while(token!=NULL){
+        	for(int i=0;i<strlen(token);i++)
+        		command_without_space_or_tab[counter++] = token[i];
+        	command_without_space_or_tab[counter++] = ' ';
+        	token = strtok(0, " ");
+        }
+        command_without_space_or_tab[counter++] = '\0';
+        token = strtok(command, ";");
