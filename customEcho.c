@@ -7,7 +7,6 @@ void customEcho(char *in_text){
 		return;
 	}
 
-
 	char final_out[strlen(in_text)];
 	int counter = 0;
 	for(int i=5;i<=strlen(in_text);i++){

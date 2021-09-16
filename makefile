@@ -1,2 +1,2 @@
 main:
-	gcc -o rish -g *.c
+	gcc -o RishShell -g *.c
