@@ -57,9 +57,8 @@ int main(){
 
             if ( strcmp(curr_command,"pwd")==0 )
                 customPwd();
-            else if ( strcmp(curr_command,"echo")==0 ){
+            else if ( strcmp(curr_command,"echo")==0 )
                 customEcho(token);
-            }
 
 
 
