@@ -2,6 +2,7 @@
 #include "customPwd.h"
 #include "customEcho.h"
 #include "customLs.h"
+#include "customCd.h"
 
 int main(){
 
@@ -58,13 +59,18 @@ int main(){
                 curr_command[counter++] = token[i];
             }
 
-            if ( strcmp(curr_command,"pwd")==0 )
+            if( strcmp(curr_command,"cd")==0 ){
+                int cd_check = customCd(token, cwd, home_dir, prev_directory, prev_directory_set);
+                // if (cd_check){
+                //     
+                // }
+            }
+            else if ( strcmp(curr_command,"pwd")==0 )
                 customPwd();
             else if ( strcmp(curr_command,"echo")==0 )
                 customEcho(token);
-            else if ( strcmp(curr_command,"ls")==0 ){
+            else if ( strcmp(curr_command,"ls")==0 )
                 customLs(token, home_dir);
-            }
             else if ( (strcmp(curr_command,"quit")==0) || (strcmp(curr_command,"exit")==0) || (strcmp(curr_command,"bye")==0)){
                 printf("Bubyyeeee :)\n");
                 return 0;
