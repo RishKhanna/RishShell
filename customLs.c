@@ -1,6 +1,92 @@
 #include "Header.h"
 #define MAX(a,b) (((a)>(b))?(a):(b))
 
+void print_with_l(char *in_text){
+	// printf("%s ",in_text);
+	struct stat buffer;
+	stat(in_text, &buffer);
+
+	// print the directories and permissions stuff
+	if (S_ISDIR(buffer.st_mode))
+        printf("d");
+    else
+        printf("-");
+    if (buffer.st_mode & S_IRUSR)
+        printf("r");
+    else
+        printf("-");
+    if (buffer.st_mode & S_IWUSR)
+        printf("w");
+    else
+        printf("-");
+    if (buffer.st_mode & S_IXUSR)
+        printf("x");
+    else
+        printf("-");
+    if (buffer.st_mode & S_IRGRP)
+        printf("r");
+    else
+        printf("-");
+    if (buffer.st_mode & S_IWGRP)
+        printf("w");
+    else
+        printf("-");
+    if (buffer.st_mode & S_IXGRP)
+        printf("x");
+    else
+        printf("-");
+    if (buffer.st_mode & S_IROTH)
+        printf("r");
+    else
+        printf("-");
+    if (buffer.st_mode & S_IWOTH)
+        printf("w");
+    else
+        printf("-");
+    if (buffer.st_mode & S_IXOTH)
+        printf("x");
+    else
+    	printf("-");
+
+    printf("%*ld", 4, buffer.st_nlink);
+    
+    uid_t uid = buffer.st_uid;
+    struct passwd *temp1;
+    temp1 = getpwuid(uid);
+    printf("%*s", 15, temp1->pw_name);
+    
+    gid_t gid = buffer.st_gid;
+    struct group *temp2;
+    temp2 = getgrgid(gid);
+    printf("%*s", 15, temp2->gr_name);
+
+	long int size = buffer.st_size;
+	printf("%*ld", 8, size);
+
+
+	time_t now;
+	time(&now);
+	struct tm *tm = localtime(&(buffer.st_ctime));
+	int then_month = tm->tm_mon;
+	int then_date = tm->tm_mday;
+	char with_time[20];
+	char with_year[20];
+	strftime(with_year, 20, "%b %e  %Y", tm);
+	strftime(with_time, 20, "%b %e %R", tm);
+	struct tm *now_info = localtime(&now);
+	if (now_info->tm_mon - then_month > 6)
+		printf(" %s", with_year);
+	else if (now_info->tm_mon - then_month == 6){
+		if (now_info->tm_mday > then_date)
+			printf(" %s", with_year);
+		else
+			printf(" %s", with_time);
+	}
+	else
+		printf(" %s", with_time);
+
+	return;
+}
 
 void  printlsstuff(int a_check, int l_check, char *path, int num_paths){
 
@@ -42,6 +128,12 @@ void  printlsstuff(int a_check, int l_check, char *path, int num_paths){
 		ls_list_counter = 1;
 	}
 
+	char path_and_file[PATH_MAX];
+	strcpy(path_and_file, path);
+	path_and_file[strlen(path)] = '/';
+	path_and_file[strlen(path)+1] = '\0';
+	int str_count = strlen(path_and_file);
+
 	if( (a_check==0) && (l_check==0)){
 		for( int i=0; i<ls_list_counter; i++ ){
 			if( ls_list[i][0] != '.' ){
@@ -52,9 +144,31 @@ void  printlsstuff(int a_check, int l_check, char *path, int num_paths){
 	}
 	else if( (l_check==0)){
 		for( int i=0; i<ls_list_counter; i++ ){
-				printf("%s  ", ls_list[i]);
+			printf("%s  ", ls_list[i]);
 		}
 		printf("\n");
+	}
+	else if( a_check == 0 ){
+		for(int i=0;i<ls_list_counter;i++){
+			if( ls_list[i][0] != '.' ){
+				for(int j=0;j<=strlen(ls_list[i]);j++){
+					path_and_file[str_count++] = ls_list[i][j];
+				}
+				print_with_l(path_and_file);
+				printf("  %s\n", ls_list[i]);
+				str_count = strlen(path) + 1;
+			}
+		}
+	}
+	else{
+		for(int i=0;i<ls_list_counter;i++){
+			for(int j=0;j<=strlen(ls_list[i]);j++){
+				path_and_file[str_count++] = ls_list[i][j];
+			}
+			print_with_l(path_and_file);
+			printf("  %s\n", ls_list[i]);
+			str_count = strlen(path) + 1;
+		}
 	}
 
 
@@ -136,7 +250,9 @@ void customLs(char *in_text, char *home_dir){
 		return;
 	}
 	for(int i=0; i<strlen(in_text);i++){
-		if( in_text[i]==' ' ){
+		if( in_text[i]==' ' && ( (in_text[i+1]>='a' && in_text[i+1]<='z') || (in_text[i+1]>='A' && in_text[i+1]<='Z')  ||
+				(in_text[i+1]=='.') || (in_text[i+1]=='/') || (in_text[i+1]=='~')) ){
+			printf("Hello");
 			num_spaces++;
 			num_spaces_flag = 1;
 		}
