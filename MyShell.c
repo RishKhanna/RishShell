@@ -1,6 +1,7 @@
 #include "Header.h"
 #include "customPwd.h"
 #include "customEcho.h"
+#include "customLs.h"
 
 int main(){
 
@@ -29,15 +30,16 @@ int main(){
         	printf("\nBubyyeeee :)\n");
         	return 0;
         }
+        // printf("%ld;%s",strlen(command), command);
         // getline doens't add \0
         command[num_char_read-1] = '\0';
+        // printf("%ld;%s",strlen(command), command);
         // remove intial spaces and tabs
         int counter = 0;
         while( (command[counter]==' ') || (command[counter]=='	') )
         	counter++;
         for(int i=counter; i<=strlen(command);i++ )
         	command[i-counter] = command[i];
-        // printf("%s", command);
 
         // WE NOW HAVE THE COMMANDS GIVEN IN A SINLGE INPUT
         // TIME TO LOOP THROUGH ALL THE COMMMANDS
@@ -60,6 +62,9 @@ int main(){
                 customPwd();
             else if ( strcmp(curr_command,"echo")==0 )
                 customEcho(token);
+            else if ( strcmp(curr_command,"ls")==0 ){
+                customLs(token, home_dir);
+            }
             else if ( (strcmp(curr_command,"quit")==0) || (strcmp(curr_command,"exit")==0) || (strcmp(curr_command,"bye")==0)){
                 printf("Bubyyeeee :)\n");
                 return 0;
