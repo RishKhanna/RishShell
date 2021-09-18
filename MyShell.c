@@ -61,9 +61,11 @@ int main(){
 
             if( strcmp(curr_command,"cd")==0 ){
                 int cd_check = customCd(token, cwd, home_dir, prev_directory, prev_directory_set);
-                // if (cd_check){
-                //     
-                // }
+                if (cd_check){
+                    strcpy(prev_directory,cwd);
+                    prev_directory_set = 1;
+                    updateCwd(home_dir, cwd);
+                }
             }
             else if ( strcmp(curr_command,"pwd")==0 )
                 customPwd();
