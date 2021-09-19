@@ -5,6 +5,7 @@
 #include "customCd.h"
 #include "customPinfo.h"
 #include "sysCommands.h"
+#include "customHistory.h"
 #include "Execute.h"  // KEEP THIS LAST
 
 int main(){
@@ -46,6 +47,7 @@ int main(){
         // getline doens't add \0
         command[num_char_read-1] = '\0';
         // printf("%ld;%s",strlen(command), command);
+        saveHistory(command);
         // remove intial spaces and tabs
         int counter = 0;
         while( (command[counter]==' ') || (command[counter]=='	') ){

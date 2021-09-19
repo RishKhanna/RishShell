@@ -6,6 +6,7 @@
 #include "customPinfo.h"
 #include "customRepeat.h"
 #include "sysCommands.h"
+#include "customHistory.h"
 #include "Execute.h"
 
 void Execute(char * token, char * cwd, char * home_dir, char * prev_directory){
@@ -33,15 +34,17 @@ void Execute(char * token, char * cwd, char * home_dir, char * prev_directory){
 	    }
 	}
 	else if ( strcmp(curr_command,"pwd")==0 )
-	    customPwd();
+		customPwd();
 	else if ( strcmp(curr_command,"echo")==0 )
-	    customEcho(token);
+		customEcho(token);
 	else if ( strcmp(curr_command,"ls")==0 )
-	    customLs(token, home_dir);
+		customLs(token, home_dir);
 	else if( strcmp(curr_command,"pinfo")==0 )
-	    customPinfo(token);
+		customPinfo(token);
 	else if( strcmp(curr_command,"repeat")==0 )
 		customRepeat(token, cwd, home_dir, prev_directory);
+	else if( strcmp(curr_command,"history")==0 )
+		showHistory(token);
 	else if ( (strcmp(curr_command,"quit")==0) || (strcmp(curr_command,"exit")==0) || (strcmp(curr_command,"bye")==0)){
 	    printf("Bubyyeeee :)\n");
 	    exit(0);

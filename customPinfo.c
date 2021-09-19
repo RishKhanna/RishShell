@@ -1,4 +1,5 @@
 #include "Header.h"
+#include "customCd.h"
 
 void customPinfo(char *in_text){
 
@@ -64,16 +65,21 @@ void customPinfo(char *in_text){
 		info_counter++;
 	}
 	printf("pid: %d\n", pid);
-    printf("Process Status: %s\n", stat_stuff[2]);
-    printf("Memory: %s\n", stat_stuff[22]);
+    printf("Process Status: %s", stat_stuff[2]);
+	// check if pid==this executable's pid
+	if( (pid==getpid()) && ((*stat_stuff[2]=='R')||(*stat_stuff[2]=='S')) ){
+		printf("+");
+	}
+	printf("\nMemory: %s\n", stat_stuff[22]);
     char exe_path[1024];
     char exe_path_link[1024];
     sprintf(exe_path,"/proc/%d/exe", pid);
     int check_read=readlink(exe_path, exe_path_link, 1024);
     if(check_read<0)
         printf("Executable path does not exist\n");
-    else
+    else{
         printf("Executable Path: %s\n", exe_path_link);
+    }
 
 	return;
 }
