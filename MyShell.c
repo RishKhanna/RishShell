@@ -3,10 +3,13 @@
 #include "customEcho.h"
 #include "customLs.h"
 #include "customCd.h"
+#include "customPinfo.h"
+#include "sysCommands.h"
 
 int main(){
 
-	char home_dir[PATH_MAX];
+	// initialise dir stuff
+    char home_dir[PATH_MAX];
     getcwd(home_dir, PATH_MAX);
     char prev_directory[PATH_MAX];
     int prev_directory_set = 0;
@@ -14,6 +17,12 @@ int main(){
     char username[LOGIN_NAME_MAX];
     char cwd[PATH_MAX];
     cwd[0] = '~'; cwd[1] = '\0';
+
+    // initialise linkedlist for bg process
+    initial = malloc(sizeof(struct bg_prc));
+    initial->size = 0;
+    initial->next = NULL;
+    initial->pid = getpid();
 
     while(1){
 
@@ -37,10 +46,12 @@ int main(){
         // printf("%ld;%s",strlen(command), command);
         // remove intial spaces and tabs
         int counter = 0;
-        while( (command[counter]==' ') || (command[counter]=='	') )
+        while( (command[counter]==' ') || (command[counter]=='	') ){
         	counter++;
-        for(int i=counter; i<=strlen(command);i++ )
+        }
+        for(int i=counter; i<=strlen(command);i++ ){
         	command[i-counter] = command[i];
+        }
 
         // WE NOW HAVE THE COMMANDS GIVEN IN A SINLGE INPUT
         // TIME TO LOOP THROUGH ALL THE COMMMANDS
@@ -59,7 +70,10 @@ int main(){
                 curr_command[counter++] = token[i];
             }
 
-            if( strcmp(curr_command,"cd")==0 ){
+            if( strcmp(curr_command,"")==0 ){
+                int cool = 0;
+            }
+            else if( strcmp(curr_command,"cd")==0 ){
                 int cd_check = customCd(token, cwd, home_dir, prev_directory, prev_directory_set);
                 if (cd_check){
                     strcpy(prev_directory,cwd);
@@ -73,10 +87,42 @@ int main(){
                 customEcho(token);
             else if ( strcmp(curr_command,"ls")==0 )
                 customLs(token, home_dir);
+            else if( strcmp(curr_command,"pinfo")==0 )
+                customPinfo(token);
             else if ( (strcmp(curr_command,"quit")==0) || (strcmp(curr_command,"exit")==0) || (strcmp(curr_command,"bye")==0)){
                 printf("Bubyyeeee :)\n");
                 return 0;
             }
+            else{
+                // remove starting and ending's spaces
+                int start = -1;
+                int end = strlen(token);
+                for (int i = 0; i < strlen(token); i++){
+                    if( (token[i]==' ') || (token[i]=='\t'))
+                        start = i;
+                    else
+                        break;
+                }
+                for (int i = strlen(token)-1; i >= 0; i--){
+                    if( (token[i]==' ') || (token[i]=='\t'))
+                        end = i;
+                    else
+                        break;
+                }
+                // printf("start:%d;end:%d", start, end);
+                for( int i=start+1; i<end; i++ ){
+                    token[i-start-1] = token[i];
+                }
+                token[end-start-1] = '\0';
+                // check if last element is &
+                if( token[strlen(token) - 1]=='&' ){
+                    sysCommands(token, 1);
+                }
+                else{
+                    sysCommands(token,0);
+                }
+            }
+            // Execute(curr_command, token, cwd, home_dir, prev_directory, prev_directory_set);
 
         	// moves to the next command
             token = strtok(NULL, ";");
