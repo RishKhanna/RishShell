@@ -5,14 +5,16 @@ Name: Rishabh Khanna <br>
 Roll Number: 2019113025
 
 ## How to run the shell:
-- Run "make" in the SinShell directory.
-- Then, run "./sin" to run the shell
+- Run "make" in the RishShell directory.
+- Then, run "./RishShell" to run the shell
 - Type "quit", "bye" and 'exit" to exit the shell
+
 
 ## Display
 - On executing the code, a shell prompt of the following form appears along with it:
   - ```<username@system_name:curr_dir>```
 - The directory from which the shell is invoked is the home directory of the shell and is indicated by "~"
+
 
 ## Implemented Commands:
 - ```cd [directory path]```
@@ -36,6 +38,7 @@ Roll Number: 2019113025
   - Possible flags: -l (displays extra information regarding files), -a (display all files, including hidden files), -al/-la (displays extra information regarding all files, including hidden files)
   - ls can also handle multiple [directory path]s, in which case it will list the files of all provided directories
   - The order in which the flags and [directory path]s are provided is inconsequential to the working of ls
+  - In the -l flag files more than 6 months old, display year instead of time
   - ls is implemented in "customLs.c" and "customLs.h"
   
 - ```repeat```
@@ -55,9 +58,23 @@ Roll Number: 2019113025
   - "history [number of commands]" lists the [number of commands] most recently executed commands
   - If [number of commands] is entered as a value greater than 20, then the available history will be printed
   - If number of executed commands is less than requested number of commands, the maximum number of recorded commands will be printed
-  - The executed commands are stored in "hist_info.txt", and if "hist_info.txt" does not exist then it will be created as a part of the command
+  - The executed commands are stored in ".RishShell_history", and if ".RishShell_history" does not exist then it will be created as a part of the command
   - History is implemented in "customHistory.c" and "customHistory.h"
   
 - ```quit```
   - "quit", "bye" and 'exit" quits the shell
   - "Ctrl+D" will also quit the shell
+
+## Foreground and background processes:
+- Foreground
+  - Handles foreground processes other than the implemented commands using execvp
+- Background
+  - Handles background processes other than the implemented commands using execvp
+  - Print info (pip) of background processes when terminated.
+- It is implemented in "sysCommands.c" and "sysCommands.h"
+
+## Other things to note:
+- ';' separated commands
+- RishShell is equipped to execute multiple ';' separated commands
+- Handling extra white space
+- RishShell is equipped to handle extra spaces(' ') and tabs('\t') in commands
