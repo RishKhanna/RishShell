@@ -35,7 +35,7 @@ void customPinfo(char *in_text){
 				return;
 			}
 		}
-		pid = pid = atoi(in_text);
+		pid = atoi(in_text);
 	}
 	// printf("%d\n",pid);
 	// printf("%s\n",in_text );

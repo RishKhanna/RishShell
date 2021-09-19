@@ -3,6 +3,6 @@
 
 void updateCwd(char *, char*);
 
-int customCd(char *,char *, char *,char *,int);
+int customCd(char *,char *, char *,char *);
 
 #endif

@@ -36,7 +36,7 @@ void updateCwd(char *home_dir, char *final){
 
 
 
-int customCd(char *in_text,char *curr_dir, char *home_dir, char *prev_directory, int prev_dir_flag){
+int customCd(char *in_text,char *curr_dir, char *home_dir, char *prev_directory){
 
 	// printf("%s\n", in_text);
 	char final_path[PATH_MAX];
@@ -80,11 +80,11 @@ int customCd(char *in_text,char *curr_dir, char *home_dir, char *prev_directory,
 
 	int final_counter = 0;
 	if( strcmp(in_text, "-")==0 ){
-		if(prev_dir_flag==0){
-			printf("cd: No previous directory\n");
-			return 0;
-		}
-		else{
+		// if(prev_dir_flag==0){
+		// 	printf("cd: No previous directory\n");
+		// 	return 0;
+		// }
+		// else{
 			for(int i=0; i<=strlen(prev_directory);i++){
 				if( prev_directory[i]=='~' ){
 					for(int j=0; j<strlen(home_dir);j++){
@@ -96,7 +96,7 @@ int customCd(char *in_text,char *curr_dir, char *home_dir, char *prev_directory,
 				}
 			}
 			final_path[final_counter] = '\0';
-		}
+		// }
 	}
 	else if( strcmp(in_text, ".")==0 ) {
 		return 1;
@@ -128,6 +128,12 @@ int customCd(char *in_text,char *curr_dir, char *home_dir, char *prev_directory,
     	// check permissions
     	if (st.st_mode & S_IXUSR){
     		chdir(final_path);
+			if( strcmp(in_text, "-")==0 ){
+				char print_path[PATH_MAX];
+				strcpy(print_path, final_path);
+				updateCwd(home_dir,print_path);
+				printf("%s\n", print_path);
+			}
     		return 1;
     	}
     	else{
