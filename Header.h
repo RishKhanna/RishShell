@@ -11,5 +11,5 @@
 #include <grp.h>
 #include <time.h>
 
-
+char home_dir[PATH_MAX];
 struct bg_prc* initial;

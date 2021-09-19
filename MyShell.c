@@ -10,12 +10,12 @@
 int main(){
 
 	// initialise dir stuff
-    char home_dir[PATH_MAX];
+    // char home_dir[PATH_MAX];
     char prev_directory[PATH_MAX];
     getcwd(home_dir, PATH_MAX);
     getcwd(prev_directory, PATH_MAX);
     // int prev_directory_set = 0;
-	char hostname[HOST_NAME_MAX];
+    char hostname[HOST_NAME_MAX];
     char username[LOGIN_NAME_MAX];
     char cwd[PATH_MAX];
     cwd[0] = '~'; cwd[1] = '\0';

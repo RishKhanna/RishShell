@@ -1,5 +1,6 @@
 #include "Header.h"
 #include "sysCommands.h"
+#include "customCd.h"
 
 void add_bg(char *in_proc, int in_pid){
 	
@@ -38,12 +39,23 @@ void func(int signum){
     while ((pid_change = waitpid((pid_t)(-1), &stat, WNOHANG)) > 0){
         char *na = find_bg(pid_change);
         int exit=WEXITSTATUS(stat);
+        char hostname[HOST_NAME_MAX];
+    	char username[LOGIN_NAME_MAX];
+    	char cwd[PATH_MAX];
+		gethostname(hostname, HOST_NAME_MAX);
+		getlogin_r(username, LOGIN_NAME_MAX);
+		updateCwd(home_dir, cwd);
         if( exit==0 ){
-        	fprintf(stderr, "\n%s with pid %d exited with exit code %d (NORMALLY)\n", na, pid_change, exit);
+        	fprintf(stderr, "\n%s with pid %d exited normally\n", na, pid_change);
+			// printf("<%s@%s:%s>", username, hostname, cwd);
+
         }
         else{
-        	fprintf(stderr, "\n%s with pid %d exited with exit code %d (ABNORMALLY)\n", na, pid_change, exit);
+        	fprintf(stderr, "\n%s with pid %d exited abnormally\n", na, pid_change);
+			// printf("<%s@%s:%s>", username, hostname, cwd);
         }
+		fprintf(stderr, "<%s@%s:%s>", username, hostname, cwd);
+		// printf("<%s@%s:%s>", username, hostname, cwd);
     }
 }
 
@@ -85,13 +97,13 @@ void sysCommands(char *in_text, int bg_flag){
 			setpgid(0, 0);
 		}
 		if (execvp(wordslist[0], wordslist) < 0){
-			// printf("%s\n", wordslist[0]);
 	        printf("Could not run command.\n");
 	        exit(0);
 	    }
 	}
 	else{
 		if( bg_flag==1 ){
+			printf("%d\n", pid);
 			setpgid(pid, 0);
 			add_bg(wordslist[0], pid);
 			signal(SIGCHLD, func);
