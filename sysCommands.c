@@ -38,7 +38,12 @@ void func(int signum){
     while ((pid_change = waitpid((pid_t)(-1), &stat, WNOHANG)) > 0){
         char *na = find_bg(pid_change);
         int exit=WEXITSTATUS(stat);
-        fprintf(stderr, "\n%s with pid %d exited with exit code %d\n", na, pid_change, exit);
+        if( exit==0 ){
+        	fprintf(stderr, "\n%s with pid %d exited with exit code %d (NORMALLY)\n", na, pid_change, exit);
+        }
+        else{
+        	fprintf(stderr, "\n%s with pid %d exited with exit code %d (ABNORMALLY)\n", na, pid_change, exit);
+        }
     }
 }
 
@@ -80,7 +85,7 @@ void sysCommands(char *in_text, int bg_flag){
 			setpgid(0, 0);
 		}
 		if (execvp(wordslist[0], wordslist) < 0){
-			printf("%s\n", wordslist[0]);
+			// printf("%s\n", wordslist[0]);
 	        printf("Could not run command.\n");
 	        exit(0);
 	    }
