@@ -7,9 +7,19 @@
 #include "customRepeat.h"
 #include "sysCommands.h"
 #include "customHistory.h"
+#include "customRedirect.h"
 #include "Execute.h"
 
 void Execute(char * token, char * cwd, char * home_dir, char * prev_directory){
+
+	// CHECK FOR PIPING
+	for(int i=0;i<=strlen(token);i++){
+		if(token[i]=='|'){
+			customRedirect(token);
+			return;
+		}
+	}
+
 
 	// EXTRACT THE FIRST WORD (COMMAND WIHOUT ARGS)
 	char curr_command[1024];
