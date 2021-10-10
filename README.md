@@ -52,6 +52,12 @@ Roll Number: 2019113025
   - pinfo makes use of the /proc/[pid]/stat and /proc/[pid]/exe files to obtain information regarding ongoing processes
   - To get process status and memory, it is assumed that they are the 3rd and 23rd elements in /proc/[pid]/stat, this is consistent with BASH shell
   - pinfo is implemented in "customPinfo.c" and "customPinfo.h"
+
+- ```jobs```
+  - "jobs" prints information regarding all running and/or stopped background processes.
+  - "jobs" prints the job number, execution status, executed command, and pid of each running or stopped background process.
+  - jobs is implemented in "jobs.c" and "jobs.h".
+
   
 - ```history [number of commands]```
   - "history" lists the 10 most recently executed commands (incuding the history command)
