@@ -7,9 +7,20 @@
 #include "customRepeat.h"
 #include "sysCommands.h"
 #include "customHistory.h"
+#include "customRedirect.h"
+#include "jobs.h"
 #include "Execute.h"
 
 void Execute(char * token, char * cwd, char * home_dir, char * prev_directory){
+
+	// CHECK FOR PIPING
+	for(int i=0;i<=strlen(token);i++){
+		if(token[i]=='|'){
+			customRedirect(token);
+			return;
+		}
+	}
+
 
 	// EXTRACT THE FIRST WORD (COMMAND WIHOUT ARGS)
 	char curr_command[1024];
@@ -45,6 +56,8 @@ void Execute(char * token, char * cwd, char * home_dir, char * prev_directory){
 		customRepeat(token, cwd, home_dir, prev_directory);
 	else if( strcmp(curr_command,"history")==0 )
 		showHistory(token);
+	else if( strcmp(curr_command,"jobs")==0 )
+		jobs(token);
 	else if ( (strcmp(curr_command,"quit")==0) || (strcmp(curr_command,"exit")==0) || (strcmp(curr_command,"bye")==0)){
 	    printf("Bubyyeeee :)\n");
 	    exit(0);
